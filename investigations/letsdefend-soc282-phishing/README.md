@@ -1,73 +1,41 @@
-# LetsDefend SOC282: Phishing Alert - Deceptive Mail Detected
+# LetsDefend SOC282 — Simple Summary
 
 **Case ID:** SOC282  
 **Platform:** LetsDefend  
-**Status:** ✅ True Positive  
-**Severity:** Critical  
-**Alert Type:** Phishing - Deceptive Mail with Malicious Attachment  
-**Investigation Duration:** ~30 minutes  
-**Outcome:** System compromised → Isolated & contained
+**Result:** True Positive (confirmed infection)  
+**Severity:** High  
+**Time to resolve:** ~30 minutes
 
----
+## Short, Simple Summary
 
-## Executive Summary
+A user named Felix got a phishing email with a ZIP file named `free-coffee.zip`. The ZIP was password-protected with the password `infected`. Inside was `Coffee.exe`. VirusTotal showed the file as malicious (61/75 detections). The user ran the file, the endpoint showed `Coffee.exe` running, and we isolated the machine. We removed the email and documented the steps.
 
-Detected and investigated a phishing email targeting user **Felix** containing a malicious ZIP attachment (`free-coffee.zip`). The attachment contained a backdoor executable (`Coffee.exe`) that was executed by the user, compromising the system. Email was deleted, system was isolated, and containment measures were applied.
+## Quick Facts
+- Malware type: Backdoor (remote access)
+- VirusTotal detections: 61/75
+- User affected: Felix (anonymized)
+- Device action: Allowed (email delivered)
+- Action taken: Email deleted, device isolated
 
----
+## What I Collected
+- Attachment name: `free-coffee.zip` (password: `infected`)
+- Executable: `Coffee.exe`
+- Hashes: (left as placeholders — replace with your VirusTotal values)
 
-## Key Findings
+## Steps I Did (plain language)
+1. Opened the alert in LetsDefend and created a case
+2. Looked at the email headers to see who sent it
+3. Found the password-protected ZIP and its password
+4. Uploaded the file to VirusTotal and saw many vendors flagged it
+5. Confirmed the email was delivered to the user
+6. Checked the endpoint logs and saw `Coffee.exe` running
+7. Deleted the email from the user's inbox to stop others
+8. Isolated the user's machine to stop spread
+9. Wrote this report and recommended next steps
 
-| Metric | Value |
-|--------|-------|
-| **Malware Type** | Backdoor |
-| **Detection Rate** | 61/75 VirusTotal engines |
-| **User Impacted** | Felix |
-| **File Delivered** | Yes (Device Action: Allowed) |
-| **Execution Confirmed** | Yes (Coffee.exe process found) |
-| **Containment Status** | System Isolated ✅ |
+## Tools used
+- LetsDefend SIEM and EDR (built-in)
+- VirusTotal for file reputation
 
----
-
-## IOCs Extracted
-
-- **Sender Email:** [Spoofed - extracted from email headers]
-- **Attachment Name:** `free-coffee.zip`
-- **Archive Password:** `infected`
-- **Executable:** `Coffee.exe`
-- **File Hash:** [MD5/SHA256 from VirusTotal]
-- **Threat Classification:** Backdoor/Remote Access Trojan
-
----
-
-## Investigation Steps
-
-1. ✅ Created case and initiated playbook
-2. ✅ Parsed email headers (source, destination, subject)
-3. ✅ Located email in Email Security section
-4. ✅ Identified malicious attachment (`free-coffee.zip`)
-5. ✅ Analyzed attachment via VirusTotal (61/75 engines flagged)
-6. ✅ Verified delivery status (Allowed → reached user)
-7. ✅ Deleted email from user inbox
-8. ✅ Checked Endpoint Security for process execution
-9. ✅ Found `Coffee.exe` process running (confirmed infection)
-10. ✅ Isolated affected user system
-11. ✅ Documented findings and closed alert
-
----
-
-## Skills Demonstrated
-
-- Email triage and header parsing
-- Malware analysis (VirusTotal integration)
-- Endpoint security investigation
-- Incident containment procedures
-- Evidence preservation
-- Documentation and case closure
-
----
-
-## References
-
-- **Source:** [SOC282 - LetsDefend Investigation](https://medium.com/@sahilrp3/soc282-phishing-alert-deceptive-mail-detected-letsdefend-995254557b44)
-- **Tools Used:** LetsDefend, VirusTotal, Email Security module, Endpoint Security module
+## Notes
+- All personal names and sensitive info are anonymized or removed. Replace hashes/times with your real values if you want to publish them.
