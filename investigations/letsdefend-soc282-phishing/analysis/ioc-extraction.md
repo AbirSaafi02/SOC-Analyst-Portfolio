@@ -9,7 +9,7 @@
 - Attachment name: `free-coffee.zip` (password: `infected`)
 - Inside: `Coffee.exe` (Windows executable)
 - VirusTotal: 61/75 vendors flagged the file
-- Replace hashes with the real MD5/SHA256 if you want to publish them
+- Use MD5/SHA256 hashes from the case for exact blocking rules
 
 ## Endpoint signs (what to hunt for)
 - Process name: `Coffee.exe` running

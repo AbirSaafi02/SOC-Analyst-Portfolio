@@ -7,7 +7,7 @@ Each investigation includes:
 - **case-details.md** - Full investigation walkthrough
 - **analysis/** - Technical analysis artifacts
   - `ioc-extraction.md` - Indicators of Compromise
-  - `detection-sigma.yml` - Detection rules (YARA, Sigma)
+  - `detection-sigma.yml` - Detection rules (SIGMA, SIEM queries)
   - `threat-assessment.md` - Impact analysis & recommendations
 - **evidence/** - Screenshots and supporting artifacts
 - **resume-bullets.md** - 4 versions (Entry → CISO-path)
@@ -62,7 +62,7 @@ Each investigation includes:
 ### Threat Intelligence
 - ✅ IOC extraction & correlation
 - ✅ Threat actor infrastructure mapping
-- ✅ Detection rule development (Sigma/YARA)
+- ✅ Detection rule development (SIGMA)
 - ✅ Threat hunting
 
 ---

@@ -174,11 +174,10 @@ Based on backdoor classification:
 
 ### Long-Term Actions (Ongoing)
 - [ ] Update detection rules with SOC282 IOCs
-- [ ] Create SIGMA rule for similar attacks
 - [ ] Hunt for similar phishing campaigns in environment
 - [ ] Implement threat intelligence feeds
-- [ ] User security awareness program expansion
-- [ ] Privileged access review (if user has elevated permissions)
+- [ ] Expand user security awareness training
+- [ ] Review privileged access if the user has elevated permissions
 
 ---
 

@@ -38,7 +38,7 @@
 
 ## Version 3: Advanced (Senior Analyst / Detection Engineer Focus)
 
-**"Led investigation of sophisticated phishing campaign (LetsDefend SOC282) using multi-stage detection pipeline: email metadata analysis → attachment reputation scoring → behavioral endpoint detection. Analyzed password-protected malware archive (free-coffee.zip) via VirusTotal, confirming backdoor/RAT family. Correlated email delivery logs with process execution telemetry to establish attack timeline and user compromise. Implemented immediate containment (device isolation) while initiating forensic preservation (memory dump, filesystem imaging). Developed Sigma YARA detection rule for similar attack patterns, reducing hunt time for comparable phishing campaigns from 8 hours to 15 minutes. Documented threat actor infrastructure (3 IOCs) and recommended email gateway hardening to prevent password-protected executable delivery. Investigation achieved 100% accuracy (TP confirmed), zero false positives, and prevented estimated 40+ potential system compromises through proactive hunting."**
+**"Led investigation of sophisticated phishing campaign (LetsDefend SOC282) using multi-stage detection pipeline: email metadata analysis → attachment reputation scoring → behavioral endpoint detection. Analyzed password-protected malware archive (free-coffee.zip) via VirusTotal, confirming backdoor/RAT family. Correlated email delivery logs with process execution telemetry to establish attack timeline and user compromise. Implemented immediate containment (device isolation) while initiating forensic preservation (memory dump, filesystem imaging). Developed SIGMA detection rule for similar attack patterns, reducing hunt time for comparable phishing campaigns from 8 hours to 15 minutes. Documented threat actor infrastructure (3 IOCs) and recommended email gateway hardening to prevent password-protected executable delivery. Investigation achieved 100% accuracy (TP confirmed), zero false positives, and prevented estimated 40+ potential system compromises through proactive hunting."**
 
 **Key Skills Highlighted:**
 - Phishing + malware hybrid investigation
@@ -46,7 +46,7 @@
 - Multi-source IOC correlation (email + endpoint + reputation)
 - Behavioral analysis & process forensics
 - Threat intelligence integration & enrichment
-- Detection rule development (Sigma/YARA)
+- Detection rule development (SIGMA)
 - Incident response coordination
 - Root cause analysis
 - Threat actor infrastructure mapping

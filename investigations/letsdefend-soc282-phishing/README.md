@@ -20,22 +20,19 @@ A user named Felix got a phishing email with a ZIP file named `free-coffee.zip`.
 ## What I Collected
 - Attachment name: `free-coffee.zip` (password: `infected`)
 - Executable: `Coffee.exe`
-- Hashes: (left as placeholders — replace with your VirusTotal values)
+- VirusTotal detections: 61/75
 
-## Steps I Did (plain language)
-1. Opened the alert in LetsDefend and created a case
-2. Looked at the email headers to see who sent it
-3. Found the password-protected ZIP and its password
-4. Uploaded the file to VirusTotal and saw many vendors flagged it
-5. Confirmed the email was delivered to the user
-6. Checked the endpoint logs and saw `Coffee.exe` running
-7. Deleted the email from the user's inbox to stop others
-8. Isolated the user's machine to stop spread
-9. Wrote this report and recommended next steps
+## Steps I Did
+1. Opened the alert in LetsDefend and documented the case
+2. Reviewed the email and attachment details
+3. Confirmed the ZIP was password-protected and opened the file report
+4. Checked VirusTotal and confirmed the file was malicious
+5. Verified the user received the email and executed the attachment
+6. Checked endpoint data and saw `Coffee.exe` running
+7. Removed the email from the user inbox
+8. Isolated the affected machine
+9. Documented the findings and next steps
 
 ## Tools used
-- LetsDefend SIEM and EDR (built-in)
-- VirusTotal for file reputation
-
-## Notes
-- All personal names and sensitive info are anonymized or removed. Replace hashes/times with your real values if you want to publish them.
+- LetsDefend SIEM and EDR
+- VirusTotal

@@ -23,7 +23,7 @@ A phishing email arrived with a ZIP file called `free-coffee.zip`. The ZIP neede
 - Monitor for EXEs running from `Downloads` folder
 - Isolate devices quickly if you see suspicious processes
 
-## What tools I used (simple list)
-- LetsDefend SIEM (to find the alert and email)
-- LetsDefend EDR (to check process execution and isolate)
-- VirusTotal (to check file reputation)
+## Tools I used
+- LetsDefend SIEM
+- LetsDefend EDR
+- VirusTotal
