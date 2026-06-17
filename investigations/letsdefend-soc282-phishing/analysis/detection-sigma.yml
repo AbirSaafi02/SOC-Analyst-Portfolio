@@ -1,0 +1,262 @@
+title: Phishing Email with Password-Protected Malicious Attachment (SOC282 Pattern)
+id: soc282-phishing-password-protected-archive
+description: |
+  Detects phishing emails containing password-protected ZIP archives with executable files.
+  Based on LetsDefend SOC282 case - "free-coffee.zip" with backdoor payload.
+  
+  Attack Pattern:
+  - Email with social engineering theme (free offer, limited time)
+  - Password-protected ZIP attachment
+  - Executable file inside archive
+  - Threat actor goal: Bypass email gateway scanning
+
+author: SOC Analyst
+date: 2024/06/17
+modified: 2024/06/17
+status: experimental
+severity: critical
+
+logsource:
+  category: email_security
+  product: letsdefend
+
+detection:
+  email_properties:
+    # Suspicious email metadata
+    - authentication_status: 
+        - DKIM: fail
+        - SPF: fail
+        - DMARC: fail
+    
+    # Social engineering keywords
+    - subject|contains|all:
+        - 'free'
+        - 'voucher'
+        - 'offer'
+        - 'limited'
+        - 'click'
+        - 'urgent'
+    
+    # Sender reputation
+    - sender_domain: 
+        - is_newly_registered: true
+        - reputation: malicious
+    
+  attachment_properties:
+    # Password-protected archive indicators
+    - filename|endswith: '.zip'
+    - file_type: 'application/x-zip-compressed'
+    - is_password_protected: true
+    - archive_contains_executable: true
+    
+    # Malicious content inside
+    - archive_files|contains:
+        - '.exe'
+        - '.com'
+        - '.scr'
+        - '.vbs'
+        - '.ps1'
+    
+    # Suspicious naming patterns
+    - filename|contains:
+        - 'free-'
+        - 'invoice'
+        - 'receipt'
+        - 'document'
+        - 'update'
+  
+  file_reputation:
+    # Known malicious hashes
+    - file_hash_md5|contains|all: 'coffee.exe'
+    - virustotal_detection_ratio: '> 50'
+    - virustotal_verdict: 'malicious'
+    - threat_type:
+        - 'backdoor'
+        - 'trojan'
+        - 'rat'
+  
+  delivery_status:
+    # Email successfully delivered (worst case)
+    - device_action: 'allowed'
+    - user_received: true
+
+  # Combine conditions: Email + Archive + Reputation
+  selection: |
+    (email_properties AND attachment_properties AND (file_reputation OR delivery_status))
+
+filter:
+  # Reduce false positives
+  - legitimate_archive_sender: false
+  - whitelisted_domain: false
+  - corporate_authorized_distribution: false
+
+condition: selection
+
+falsepositives:
+  - Legitimate password-protected archives from known vendors (rare)
+  - Corporate file distribution with executable updates
+  - Internal tools with password-protected deployment
+
+action:
+  - immediate: 
+      - flag_email_as_phishing
+      - quarantine_attachment
+      - delete_from_user_inbox
+      - alert_security_team
+  
+  - followup:
+      - check_endpoint_for_execution
+      - monitor_user_device
+      - isolate_if_executed
+      - credential_reset
+
+---
+# Companion Detection: Endpoint Execution (Process-Based)
+
+title: Suspicious Executable Execution from Downloads Folder After Phishing Email
+id: soc282-phishing-execution-endpoint
+description: |
+  Detects execution of suspicious executable from user Downloads folder,
+  correlating with phishing email alert.
+  
+  Behavioral pattern:
+  - User receives phishing email
+  - User extracts password-protected ZIP archive
+  - User double-clicks executable from Downloads
+  - Process spawned from file extraction location
+
+author: SOC Analyst
+date: 2024/06/17
+status: experimental
+severity: critical
+
+logsource:
+  category: process_creation
+  product: endpoint_security
+  platform: windows
+
+detection:
+  process_location:
+    - image|contains:
+        - 'Downloads'
+        - 'Temp'
+        - 'AppData\\Local\\Temp'
+    
+    - parent_image|contains:
+        - 'explorer.exe'
+        - 'winrar.exe'
+        - '7z.exe'
+  
+  process_name:
+    - image|endswith: '.exe'
+    - image|contains:
+        - 'coffee'
+        - 'invoice'
+        - 'document'
+        - 'update'
+    
+    # Avoid common safe executables
+    - image|excludes:
+        - 'chrome.exe'
+        - 'firefox.exe'
+        - 'outlook.exe'
+  
+  process_behavior:
+    # Suspicious process activity post-execution
+    - command_line|contains|any:
+        - 'cmd.exe'
+        - 'powershell.exe'
+        - 'whoami'
+        - 'ipconfig'
+      
+    - network_connection: true
+    - registry_modification: true
+  
+  correlation:
+    # Link to email alert if available
+    - related_email_alert: phishing_detected
+    - time_delta: '< 10 minutes'
+
+condition: process_location AND process_name AND (process_behavior OR correlation)
+
+falsepositives:
+  - Legitimate software installers from Downloads
+  - User intentionally running downloaded tools
+
+action:
+  - immediate:
+      - terminate_process
+      - isolate_device
+      - quarantine_executable
+      - log_full_process_chain
+  
+  - followup:
+      - memory_dump_analysis
+      - registry_persistence_check
+      - network_connections_analysis
+      - scheduled_task_check
+
+---
+
+# Hunt Query: SIEM / Log Aggregation
+
+# Splunk Query
+```splunk
+index=email_security 
+| search attachment_name="free-coffee.zip" OR (attachment_type="zip" AND is_password_protected=true AND archive_contains_executable=true)
+| stats count by src_user, src_ip, attachment_name, virustotal_detection_ratio
+| search virustotal_detection_ratio > 50
+| join type=left src_user 
+  [ search index=endpoint process_name="Coffee.exe" OR process_path="*Downloads*" parent_process="explorer.exe"
+    | stats latest(process_name) as executed_file, latest(_time) as execution_time by src_user
+  ]
+| table src_user, src_ip, attachment_name, executed_file, execution_time, virustotal_detection_ratio
+| where execution_time != null
+```
+
+# Elasticsearch/ELK Query
+```json
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "email.attachment.is_password_protected": true
+          }
+        },
+        {
+          "regexp": {
+            "email.attachment.name": ".*\\.zip$"
+          }
+        },
+        {
+          "range": {
+            "virustotal.detection_ratio": {
+              "gte": 50
+            }
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "by_user": {
+      "terms": {
+        "field": "email.recipient.user",
+        "size": 100
+      }
+    }
+  }
+}
+```
+
+---
+
+# Threat Intelligence Feeds
+
+Correlate against these feeds for similar malware:
+- VirusTotal Intelligence (Coffee.exe family)
+- AlienVault OTX (Backdoor IOCs)
+- Abuse.ch (Malware signatures)
+- Shodan/Censys (C2 Infrastructure)
