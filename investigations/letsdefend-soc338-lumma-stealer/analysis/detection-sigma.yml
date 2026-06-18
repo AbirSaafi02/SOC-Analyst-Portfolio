@@ -1,0 +1,93 @@
+title: Click Fix Phishing with DLL Side-Loading
+id: soc338-clickfix-dll-sideload
+description: |
+  Detects phishing attacks using Click Fix / Windows Update-style lures
+  followed by DLL side-loading and Lumma Stealer execution.
+
+  Attack pattern:
+  - Fake update/fix web page
+  - Malicious domain `windows-update.site`
+  - Browser access from legitimate process
+  - DLL side-loading into a trusted loader
+  - Credential theft malware execution
+
+author: SOC Analyst
+date: 2026/06/18
+modified: 2026/06/18
+status: experimental
+severity: high
+
+logsource:
+  category: web_security
+  product: letsdefend
+
+detection:
+  selection:
+    - url|contains: 'windows-update.site'
+    - referrer|contains: 'mail.letsdefend.io'
+    - process_name|contains: 'chrome.exe'
+    - http_status: '200'
+  condition: selection
+
+falsepositives:
+  - Legitimate update domains
+  - Internal patching systems with similar referrers
+
+action:
+  - immediate:
+      - quarantine_device
+      - block_url
+      - alert_security_team
+      - collect_forensics
+  - followup:
+      - credential_reset
+      - threat_hunt
+      - IOC_enrichment
+
+---
+
+# Companion Detection: DLL Side-Loading Behavior
+
+title: Suspicious DLL Side-Loading from Browser-Downloaded Payload
+id: soc338-dll-sideload-behavior
+description: |
+  Detects suspicious DLL side-loading behavior when a trusted binary loads
+  DLLs from an untrusted location following browser download activity.
+
+logsource:
+  category: process_creation
+  product: endpoint_security
+  platform: windows
+
+detection:
+  side_loading:
+    - parent_image|endswith: 'chrome.exe'
+    - image|contains:
+        - '\\ClickFix'
+        - '\\windows-update.site'
+        - '\\Update'
+    - loaded_dll|contains:
+        - 'd3dcompiler_47.dll'
+        - 'mfc140u.dll'
+        - 'api-ms-win'
+    - process_command_line|contains:
+        - 'ClickFix'
+        - 'update'
+        - 'repair'
+  condition: side_loading
+
+falsepositives:
+  - Legitimate software update installers
+  - Known browser extension loaders
+
+action:
+  - immediate:
+      - terminate_process
+      - isolate_device
+      - quarantine_dll
+      - log_process_tree
+  - followup:
+      - memory_dump
+      - persistence_check
+      - network_connection_analysis
+      - user_credential_review
