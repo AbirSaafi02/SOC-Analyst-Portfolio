@@ -13,8 +13,9 @@ A hands-on portfolio demonstrating practical security operations skills through 
 | Case ID | Title | Platform | Severity | Result | Time |
 |---------|-------|----------|----------|--------|------|
 | **SOC282** | Phishing Alert - Deceptive Mail Detected | LetsDefend | Critical | ✅ TP | 30 min |
+| **SOC338** | Lumma Stealer - DLL Side-Loading via Click Fix | LetsDefend | High | ✅ TP | 35 min |
 
-**Investigation Details:** [→ SOC282 Case](investigations/letsdefend-soc282-phishing/)
+**Investigation Details:** [→ SOC282 Case](investigations/letsdefend-soc282-phishing/) | [→ SOC338 Case](investigations/letsdefend-soc338-lumma-stealer/)
 
 ---
 
@@ -67,11 +68,11 @@ Complete case documentation including:
 
 | Metric | Value |
 |--------|-------|
-| **Investigations Completed** | 1 |
-| **True Positives** | 1 (100%) |
-| **IOCs Extracted** | 5+ |
-| **Detection Rules Created** | 5 |
-| **Average Investigation Time** | 30 min |
+| **Investigations Completed** | 2 |
+| **True Positives** | 2 (100%) |
+| **IOCs Extracted** | 10+ |
+| **Detection Rules Created** | 6 |
+| **Average Investigation Time** | 32.5 min |
 | **Malware Detection Rate** | 61/75 engines (81%) |
 
 ---
