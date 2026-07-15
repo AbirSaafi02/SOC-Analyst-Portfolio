@@ -17,6 +17,12 @@ A hands-on portfolio demonstrating practical security operations skills through 
 
 **Investigation Details:** [→ SOC282 Case](investigations/letsdefend-soc282-phishing/) | [→ SOC338 Case](investigations/letsdefend-soc338-lumma-stealer/)
 
+### Adding a New Case
+When you add another investigation, update this section by:
+- adding a new row to the table above with the case ID, title, platform, severity, result, and time
+- adding a link to the new case folder under Investigation Details
+- updating the portfolio metrics if the counts change
+
 ---
 
 ## 🎯 What's Here
@@ -164,5 +170,5 @@ This portfolio is licensed under the MIT License — see [LICENSE](LICENSE) for 
 
 ---
 
-**Last Updated:** June 17, 2024  
+**Last Updated:** July 15, 2026  
 **Status:** 🟢 Active Learning  

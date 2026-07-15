@@ -21,6 +21,12 @@ Each investigation includes:
 | SOC282 | Phishing - Deceptive Mail Detected | LetsDefend | Critical | TP ✅ | Aug 30, 2024 | 30 min |
 | SOC338 | Lumma Stealer - DLL Side-Loading via Click Fix | LetsDefend | High | TP ✅ | Jun 18, 2026 | 35 min |
 
+### When You Add a New Case
+Update this page manually by:
+- adding a new row to the Investigation Log table
+- updating the Quick Stats totals for investigations, true positives, and any other relevant metrics
+- changing the Last Updated date to the current date
+
 ---
 
 ## Quick Stats
@@ -143,6 +149,6 @@ Use this for future investigations:
 
 ---
 
-**Last Updated:** June 17, 2024  
+**Last Updated:** July 15, 2026  
 **Total Hours:** [1h]  
 **Career Goal:** [Entry SOC Analyst]
