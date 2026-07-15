@@ -10,7 +10,7 @@ Each investigation includes:
   - `detection-sigma.yml` - Detection rules (SIGMA, SIEM queries)
   - `threat-assessment.md` - Impact analysis & recommendations
 - **evidence/** - Screenshots and supporting artifacts
-- **resume-bullets.md** - 4 versions (Entry → CISO-path)
+- **resume-bullets.md** - 4 versions (Entry → CISO-path, kept locally and excluded from GitHub)
 
 ---
 

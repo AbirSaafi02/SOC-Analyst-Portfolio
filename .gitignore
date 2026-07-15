@@ -35,3 +35,6 @@ env/
 # Personal Notes (optional - uncomment to ignore)
 # personal-notes/
 # scratch/
+
+# Local-only portfolio materials
+**/resume-bullets.md
